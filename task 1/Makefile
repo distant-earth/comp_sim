@@ -21,7 +21,7 @@ main.o: modd.o dop853.o
 res: $(PRG)
 	./$<
 	mkdir -p results
-	rm results/RESULT*
+	rm -f results/RESULT*
 	mv RESULT* results
 	
 plot:

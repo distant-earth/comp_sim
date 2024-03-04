@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
 from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 import matplotlib
-plt.rcParams["font.family"] = "Times New Roman"
+#plt.rcParams["font.family"] = "Times New Roman"
 plt.rcParams.update({'font.size': 18})
 matplotlib.rcParams['mathtext.fontset'] = 'custom'
 matplotlib.rcParams['mathtext.rm'] = 'Times New Roman'
