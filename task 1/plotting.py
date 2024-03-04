@@ -37,19 +37,19 @@ def MakePlot(T_ini, T_fin, T_step):
 		T_points, dT_points = Interpolate(t, T, dT)
 		plt.plot(T_points, dT_points, '.', markersize = 1)
 	plt.tight_layout()
-	plt.savefig('poincare.png', format='png', dpi = 300)
+	plt.savefig('pictures/poincare.png', format='png', dpi = 300)
 	plt.show()
 
 def ReadResult(k):
 	t = []; T = []; dT = []
 	if (k < 10):
-		filename = 'RESULT00' + str(k)
+		filename = 'results/RESULT00' + str(k)
 	elif (k < 100):
-		filename = 'RESULT0' + str(k)
+		filename = 'results/RESULT0' + str(k)
 	else:
-		filename = 'RESULT' + str(k)
+		filename = 'results/RESULT' + str(k)
 	with open(filename) as table:
-		print('Обрабатывается:', filename)
+		print('Обрабатывается:', filename[8:])
 		for line in table:
 			t.append(float(line.split()[0]))
 			T.append(float(line.split()[1]))

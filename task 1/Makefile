@@ -20,12 +20,16 @@ main.o: modd.o dop853.o
 
 res: $(PRG)
 	./$<
+	mkdir -p results
+	rm results/RESULT*
+	mv RESULT* results
 	
 plot:
+	mkdir -p pictures
 	python3 plotting.py
 
 clean:
-	rm -f *.o *.mod $(PRG) RESULT*
+	rm -f *.o *.mod $(PRG)
 	echo "Cleaned!"
 
 .PHONY: clean res build plot
