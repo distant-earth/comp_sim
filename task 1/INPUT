@@ -1,6 +1,6 @@
 0.33              <-- eccentricity
 0.1               <-- T_initial
-1.2                <-- T_final
-0.1                <-- step for T
+2.0                <-- T_final
+0.05                <-- step for T
 0.0                <-- T' (initial)
 1000            <-- time (number of revolutions)

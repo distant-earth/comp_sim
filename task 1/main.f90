@@ -35,7 +35,7 @@ do k = 0, N_surfaces
 	! Например, проверить RTOL и ATOL.
 	!=================================================
 	t0 = 0.d0
-	time = N_revol * period
+	time = N_revol * period ! вместо времени используется истинная аномалия
 	IPAR = k * 10
 	if (k < 10) then
 		write(filename, '(a6,i1,i1,i1)') 'RESULT', 0, 0, k

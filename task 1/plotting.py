@@ -32,16 +32,35 @@ def MakePlot(T_ini, T_fin, T_step):
 	plt.ylabel(r"$T$ '")
 	plt.xlim([-2,2])
 	plt.ylim([-2,2])
+	print("\n Подготовка графика (T',T)...")
 	for k in range(int((T_fin - T_ini) / T_step) + 1):
-		t, T, dT = ReadResult(k)
+		t, T, dT = ReadResult(k, 'T')
 		T_points, dT_points = Interpolate(t, T, dT)
 		plt.plot(T_points, dT_points, '.', markersize = 1)
 	plt.tight_layout()
-	plt.savefig('pictures/poincare.png', format='png', dpi = 300)
+	plt.savefig('pictures/poincare_T.png', format='png', dpi = 300)
+	plt.figure(figsize = (14,7))
+	plt.gca().xaxis.set_major_locator(MultipleLocator(0.5))
+	plt.gca().xaxis.set_major_formatter('{x:.1f}')
+	plt.gca().xaxis.set_minor_locator(MultipleLocator(0.1))
+	plt.gca().yaxis.set_major_locator(MultipleLocator(0.5))
+	plt.gca().yaxis.set_major_formatter('{x:.1f}')
+	plt.gca().yaxis.set_minor_locator(MultipleLocator(0.1))
+	plt.xlabel(r'$z$')
+	plt.ylabel(r"$z$ '")
+	plt.xlim([-2,2])
+	plt.ylim([-2,2])
+	print("\n Подготовка графика (z',z)...")
+	for k in range(int((T_fin - T_ini) / T_step) + 1):
+		t, z, dz = ReadResult(k, 'z')
+		z_points, dz_points = Interpolate(t, z, dz)
+		plt.plot(z_points, dz_points, '.', markersize = 1)
+	plt.tight_layout()
+	plt.savefig('pictures/poincare_z.png', format='png', dpi = 300)
 	plt.show()
 
-def ReadResult(k):
-	t = []; T = []; dT = []
+def ReadResult(k, par):
+	t = []; arr = []; d_arr = []
 	if (k < 10):
 		filename = 'results/RESULT00' + str(k)
 	elif (k < 100):
@@ -52,9 +71,9 @@ def ReadResult(k):
 		print('Обрабатывается:', filename[8:])
 		for line in table:
 			t.append(float(line.split()[0]))
-			T.append(float(line.split()[1]))
-			dT.append(float(line.split()[2]))
-	return t, T, dT
+			arr.append(float(line.split()[1 + 2 * int(par == 'z')]))
+			d_arr.append(float(line.split()[2 + 2 * int(par == 'z')]))
+	return t, arr, d_arr
 					
 def Interpolate(t, T, dT):
 	T_points = []; dT_points = []

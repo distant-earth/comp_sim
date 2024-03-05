@@ -20,34 +20,17 @@ read(1,*) dT
 read(1,*) N_revol
 end subroutine InitializeParameters
 
-function KeplerEquation(t)
-real(8) :: t, M, E_old, E, delta, KeplerEquation
-! Решаем уравнение Кеплера и находим E:
-M = n_mean * t
-E_old = M
-delta = 1.d0
-do while (delta >= 1e-10)
-	E = M + ecc * sin(E_old)
-	delta = abs(E - E_old)
-	E_old = E
-enddo
-KeplerEquation = E
-return
-end function KeplerEquation
-
 ! Правые части уравнений:
 subroutine func_right_part(N, t, y, res, RPAR, IPAR)
 integer :: N, IPAR
 real(8) :: res(N), y(N), t, RPAR(2)
 real(8) :: B_current, T_current
 real(8) :: sin_nu, cos_nu
-real(8) :: E
 T_current = y(1)
 B_current = y(2)
-E = KeplerEquation(t)
-! Косинус и синус истинной аномалии через E:
-sin_nu = (sqrt(1 - ecc**2) * sin(E)) / (1 - ecc * cos(E))
-cos_nu = (cos(E) - ecc) / (1 - ecc * cos(E))
+! Косинус и синус истинной аномалии:
+sin_nu = sin(t)
+cos_nu = cos(t)
 res(1) = B_current
 res(2) = - ((0.25d0 + T_current**2)**(-1.5d0) + ecc * cos_nu) * T_current / (1 + ecc * cos_nu)
 end subroutine func_right_part
@@ -56,16 +39,15 @@ end subroutine func_right_part
 subroutine solout(NR, t_old, t, y, N, con, icomp, ND, RPAR, IPAR, IRTRN)
 integer :: N, NR, ND, IPAR, IRTRN
 real(8) :: y(N), t_old, t, con, icomp, RPAR(2)
-real(8) :: T_current, B_current, E, sin_nu, cos_nu, z, dz
+real(8) :: T_current, B_current, sin_nu, cos_nu, z, dz
 T_current = y(1)
 B_current = y(2)
-E = KeplerEquation(t)
-! Косинус и синус истинной аномалии через E:
-sin_nu = (sqrt(1 - ecc**2) * sin(E)) / (1 - ecc * cos(E))
-cos_nu = (cos(E) - ecc) / (1 - ecc * cos(E))
+! Косинус и синус истинной аномалии:
+sin_nu = sin(t)
+cos_nu = cos(t)
 z = T_current * (1 - ecc**2) / (1 + ecc * cos_nu)
-dz = (T_current * ecc * sin_nu + dT * (1 + ecc * cos_nu)) / sqrt(1 - ecc**2)
-write(IPAR, *) t, y(1), y(2), z, dz
+dz = (T_current * ecc * sin_nu + B_current * (1 + ecc * cos_nu)) / sqrt(1 - ecc**2)
+write(IPAR, *) t, T_current, B_current, z, dz
 end subroutine solout
 
 
