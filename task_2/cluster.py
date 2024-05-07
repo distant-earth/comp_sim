@@ -56,15 +56,15 @@ def PlotMapGrid(proj="moll", center=270):
 		m.plot(xpt,ypt, marker=f'${i}$', markersize = 4 * len(str(i)), color='black')
 	return m
 		
-def PlotDataPoints(proj, center, ra, dec, clustered=False, labels=None):
+def PlotDataPoints(proj, center, ra, dec, date, threshold=0.5, clustered=False, labels=None):
 	print('Plotting...')
 	m = PlotMapGrid(proj, center)
 	x, y = m(ra,dec)
 	if clustered == False:
-		prefix = 'raw'
+		prefix = '_raw'
 		m.scatter(x, y, marker='.', s = 1, color='red', alpha=0.7)
 	else:
-		prefix = 'clustered'
+		prefix = '_clustered_t' + str(threshold)
 		n_clusters = len(set(labels))
 		for i in range(n_clusters):
 			indices = np.where(np.array(labels) == i + 1)
@@ -72,7 +72,7 @@ def PlotDataPoints(proj, center, ra, dec, clustered=False, labels=None):
 			m.scatter(x, y, marker='.', s = 1)
 	if not os.path.exists('./pictures'):
 		os.makedirs('./pictures')
-	output_filename = 'pictures/' + prefix + '_map.png'
+	output_filename = 'pictures/' + date + prefix + '.png'
 	plt.gca().xaxis.set_inverted(True)
 	plt.tight_layout()
 	plt.savefig(output_filename)
@@ -105,7 +105,7 @@ def Clustering(ra, dec, threshold=0.5):
 
 month, n_meteors, proj, center, metric, threshold = InitializeParams()
 RA, Dec = GetData(month, n_meteors)
-PlotDataPoints(proj, center, RA, Dec, clustered=False)
+PlotDataPoints(proj, center, RA, Dec, month, clustered=False)
 cluster_labels = Clustering(RA, Dec, threshold)
-PlotDataPoints(proj, center, RA, Dec, clustered=True, labels=cluster_labels)
+PlotDataPoints(proj, center, RA, Dec, month, threshold=threshold, clustered=True, labels=cluster_labels)
 
