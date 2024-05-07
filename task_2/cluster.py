@@ -34,7 +34,9 @@ def GetData(month, n_meteors):
 			if n_meteors > row_count:
 				n_meteors = None
 				print(f'using max {row_count} lines available...')
-	data = pd.read_table(filename, nrows=n_meteors, delimiter=';', skiprows=4, header=None, usecols = [11,13], names=['ra', 'dec'])
+	print(filename, n_meteors)
+	data = pd.read_table(filename, nrows=n_meteors, delimiter=';', skiprows=4, header=None, usecols = [7,9], names=['ra', 'dec'])
+	print(data)
 	ra = data['ra'].to_list()
 	dec = data['dec'].to_list()
 	print('done.\n')

@@ -1,8 +1,8 @@
 {
-    "observation file (yyyymm)": 202005,
+    "observation file (yyyymm)": 201909,
     "number of meteors to extract (integer/all)": "all",
     "map projection": "moll",
     "central longtitude of the map": 270,
     "metric (default: cosine)": "cosine",
-    "threshold distance": 0.5
+    "threshold distance": 0.3
 }
